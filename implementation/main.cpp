@@ -5,7 +5,7 @@ inline namespace saso {
 	class String {
 	public:
 
-		explicit String(const char* str) : len(strlen(str)) {
+		String(const char* str) : len(strlen(str)) {
 			std::cout << "Constructor used\n\n";
 			s = new char[len + 1];
 			memcpy(s, str, len + 1);
@@ -53,16 +53,43 @@ inline namespace saso {
 			delete[] s;
 		}
 
-		bool containts(const char& c) {
+		bool contains(const char& c) const {
 			for (size_t i = 0; i < len; ++i) {
 				if (s[i] == c)
 					return true;
 					
-				return false;
 			}
+			return false;
 		}
 
-		friend std::istream& operator>>(std::istream& is, const String& str);
+		bool contains(const std::string& c) const {
+			int k = c.length();
+
+			if (k > len)
+				return false;
+			if (c == "")
+				return true;
+			for (int i = 0; i <= len - k; ++i)
+			{
+				bool match = true;
+
+				for (int j = 0; j < k; ++j)
+				{
+					if (s[i + j] != c[j])
+					{
+						match = false;
+						break;
+					}
+				}
+
+				if (match)
+					return true;
+			}
+
+			return false;
+		}
+
+		//friend std::istream& operator>>(std::istream& is, const String& str);
 		friend std::ostream& operator<<(std::ostream& os, const String& str);
 
 	private:
@@ -70,9 +97,9 @@ inline namespace saso {
 		int len;
 	};
 
-	std::istream& operator>>(std::istream& is, const String& str) {
-		//return std::cin >> str.s;
-	}
+	//std::istream& operator>>(std::istream& is, const String& str) {
+	//	//return std::cin >> str.s;
+	//}
 
 	std::ostream& operator<<(std::ostream& os, const String& str) {
 		return std::cout << str.s;
@@ -80,8 +107,11 @@ inline namespace saso {
 }
 
 int main(int argc, char** argv) {
-	std::vector<saso::String>vec;
-	saso::String a{"hello"};
-	vec.emplace_back(std::move(a));
+	saso::String a{"aaaab"};
+	saso::String b("moga");
+	saso::String c = "asdf";
+
+	std::cout << std::boolalpha << a.contains('e') << '\n';
+	std::cout << std::boolalpha << a.contains("aaab") << '\n';
 	return 0;
 }
