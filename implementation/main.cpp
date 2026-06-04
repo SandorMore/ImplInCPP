@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <cstring>
 
 inline namespace saso {
 	class String {
@@ -113,5 +114,6 @@ int main(int argc, char** argv) {
 
 	std::cout << std::boolalpha << a.contains('e') << '\n';
 	std::cout << std::boolalpha << a.contains("aaab") << '\n';
+	std::cout << sizeof(saso::String);
 	return 0;
 }
