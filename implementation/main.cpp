@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cstring>
+#include <algorithm>
 
 inline namespace saso {
 	class String {
@@ -105,6 +106,27 @@ inline namespace saso {
 	std::ostream& operator<<(std::ostream& os, const String& str) {
 		return std::cout << str.s;
 	}
+
+	template <typename T>
+	class Tarolo {
+	public:
+		explicit Tarolo(int n) :size(n) {
+			elem = new T[size];
+		}
+		
+		Tarolo(std::initializer_list<T> e) :size(e.size()) {
+			elem = new T[size];
+			std::copy(e.begin(), e.end(), elem);
+		}
+
+
+		~Tarolo() {
+			delete[] elem;
+		}
+	private:
+		T* elem;
+		int size;
+	};
 }
 
 int main(int argc, char** argv) {
@@ -115,5 +137,7 @@ int main(int argc, char** argv) {
 	std::cout << std::boolalpha << a.contains('e') << '\n';
 	std::cout << std::boolalpha << a.contains("aaab") << '\n';
 	std::cout << sizeof(saso::String);
+
+	Tarolo<int> tarolo = { 1,2,3,4,5,6 };
 	return 0;
 }
