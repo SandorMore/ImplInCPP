@@ -123,6 +123,17 @@ inline namespace saso {
 			std::copy(e.begin(), e.end(), elem);
 		}
 
+		Tarolo(const Tarolo& other) :size(other.size) {
+			std::cout << "Tarolo copy constructor invoked\n\n";
+			elem = new T[size];
+			std::copy(other.elem, other.elem + size, elem);
+		}
+
+		Tarolo(Tarolo&& other) : size(other.size){
+			other.size = 0;
+			elem = other.elem;
+			other.elem = nullptr;
+		}
 		void add(const T& item)
 		{
 			T* newElem = new T[size + 1];
@@ -188,10 +199,10 @@ int main(int argc, char** argv) {
 
 	std::cout << std::boolalpha << a.contains('e') << '\n';
 	std::cout << std::boolalpha << a.contains("aaab") << '\n';
-	std::cout << sizeof(saso::String);
 
 	Tarolo<int> tarolo = { 1,2,3,4,5,6 };
+	Tarolo tarolo2{ tarolo };
 	if (tarolo.remove_element(3))
-		std::cout << "element was removed sucessfully";
+		std::cout << "element was removed sucessfully\n\n";
 	return 0;
 }
