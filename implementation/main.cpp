@@ -91,7 +91,7 @@ inline namespace saso {
 			return false;
 		}
 
-		//friend std::istream& operator>>(std::istream& is, const String& str);
+		friend std::istream& operator>>(std::istream& is, String& str);
 		friend std::ostream& operator<<(std::ostream& os, const String& str);
 
 	private:
@@ -99,9 +99,12 @@ inline namespace saso {
 		int len;
 	};
 
-	//std::istream& operator>>(std::istream& is, const String& str) {
-	//	//return std::cin >> str.s;
-	//}
+	std::istream& operator>>(std::istream& is, String& str) {
+		char buffer[512];
+		is >> buffer;
+		str.s = buffer;
+		return is;
+	}
 
 	std::ostream& operator<<(std::ostream& os, const String& str) {
 		return std::cout << str.s;
@@ -110,6 +113,7 @@ inline namespace saso {
 	template <typename T>
 	class Tarolo {
 	public:
+		
 		explicit Tarolo(int n) :size(n) {
 			elem = new T[size];
 		}
@@ -119,6 +123,54 @@ inline namespace saso {
 			std::copy(e.begin(), e.end(), elem);
 		}
 
+		void add(const T& item)
+		{
+			T* newElem = new T[size + 1];
+
+			for (std::size_t i = 0; i < size; ++i)
+			{
+				newElem[i] = elem[i];
+			}
+
+			newElem[size] = item;
+
+			delete[] elem;
+
+			elem = newElem;
+			++size;
+		}
+		bool remove_element(const T& item) {
+			T* newElem = new T[size - 1];
+			bool found = false;
+			for (size_t i = 0, j = 0; i < size && j < size - 1; ++i)
+			{
+				if (elem[i] == item)
+				{
+					found = true;
+					continue;
+				}
+
+				newElem[i] = elem[i];
+				++j;
+			}
+			return found;
+		}
+		void remove_at(unsigned item) {
+			if (item >= size)
+				return;
+
+			T* newElem = new T[size - 1];
+			for (size_t originalIdx = 0, newIdx = 0; originalIdx < size && newIdx < size - 1; ++originalIdx) {
+				if (originalIdx == item)
+					continue;
+
+				newElem[newIdx] = elem[originalIdx];
+				++newIdx;
+			}
+			delete[] elem;
+			elem = newElem;
+			--size;
+		}
 
 		~Tarolo() {
 			delete[] elem;
@@ -139,5 +191,7 @@ int main(int argc, char** argv) {
 	std::cout << sizeof(saso::String);
 
 	Tarolo<int> tarolo = { 1,2,3,4,5,6 };
+	if (tarolo.remove_element(3))
+		std::cout << "element was removed sucessfully";
 	return 0;
 }
