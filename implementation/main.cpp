@@ -2,6 +2,8 @@
 #include <vector>
 #include <cstring>
 #include <algorithm>
+#include <concepts>
+#include <memory>
 
 inline namespace saso {
 	class String {
@@ -29,7 +31,7 @@ inline namespace saso {
 			std::cout << "Copy assignment operator is used\n\n";
 			if (this != &other) {
 				len = other.len;
-				
+
 				delete[] s;
 				s = new char[len + 1];
 				memcpy(s, other.s, len + 1);
@@ -39,19 +41,19 @@ inline namespace saso {
 
 		String& operator=(String&& other) noexcept {
 			std::cout << "Move assignment operator is used\n\n";
-			
+
 			if (this != &other) {
 				len = other.len;
 				other.len = 0;
 
-				delete s;
+				delete[] s;
 				s = other.s;
 				other.s = nullptr;
 			}
 			return *this;
 		}
 
-		~String(){
+		~String() {
 			delete[] s;
 		}
 
@@ -59,7 +61,7 @@ inline namespace saso {
 			for (size_t i = 0; i < len; ++i) {
 				if (s[i] == c)
 					return true;
-					
+
 			}
 			return false;
 		}
@@ -107,17 +109,17 @@ inline namespace saso {
 	}
 
 	std::ostream& operator<<(std::ostream& os, const String& str) {
-		return std::cout << str.s;
+		return os << str.s;
 	}
 
 	template <typename T>
 	class Tarolo {
 	public:
-		
+
 		explicit Tarolo(int n) :size(n) {
 			elem = new T[size];
 		}
-		
+
 		Tarolo(std::initializer_list<T> e) :size(e.size()) {
 			elem = new T[size];
 			std::copy(e.begin(), e.end(), elem);
@@ -129,11 +131,38 @@ inline namespace saso {
 			std::copy(other.elem, other.elem + size, elem);
 		}
 
-		Tarolo(Tarolo&& other) : size(other.size){
+		Tarolo(Tarolo&& other) : size(other.size) {
 			other.size = 0;
 			elem = other.elem;
 			other.elem = nullptr;
 		}
+
+		Tarolo& operator=(const Tarolo& other) noexcept {
+			std::cout << "Copy assignment operator is used\n\n";
+			if (this != &other) {
+				size = other.size;
+
+				delete[] elem;
+				elem = new T[size];
+				std::copy(other.elem, other.elem + size, elem);
+			}
+			return *this;
+		}
+
+		Tarolo& operator=(Tarolo&& other) noexcept {
+			std::cout << "Move assignment operator is used\n\n";
+			if (this != &other) {
+				size = other.size;
+
+				delete[] elem;
+				elem = new T[size];
+				std::copy(other.elem, other.elem + size, elem);
+				other.size = 0;
+				other.elem = nullptr;
+			}
+			return *this;
+		}
+
 		void add(const T& item)
 		{
 			T* newElem = new T[size + 1];
@@ -190,6 +219,8 @@ inline namespace saso {
 		T* elem;
 		int size;
 	};
+
+
 }
 
 int main(int argc, char** argv) {
