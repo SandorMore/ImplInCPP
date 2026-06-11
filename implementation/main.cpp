@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <concepts>
 #include <memory>
-
+#include <cassert>
 inline namespace saso {
 	class String {
 	public:
@@ -220,8 +220,29 @@ inline namespace saso {
 		int size;
 	};
 
+	class Buffer {
+	public:
+		explicit Buffer(int v) :size(v) {
+			data = new char[size];
+		}
+		const char& operator[](int i) const {
+			assert(i < size);
+			return data[i];
+		}
+		char& operator[](int i) {
+			return const_cast<char&>(static_cast<const Buffer&>(*this)[i]);
+		}
 
+	private:
+		char* data;
+		unsigned int size;
+	};
 }
+
+void print_stuff(char* msg) {
+	printf("\n%s\n", msg);
+}
+
 
 int main(int argc, char** argv) {
 	saso::String a{"aaaab"};
@@ -235,5 +256,16 @@ int main(int argc, char** argv) {
 	Tarolo tarolo2{ tarolo };
 	if (tarolo.remove_element(3))
 		std::cout << "element was removed sucessfully\n\n";
+
+	const char* szo = "asdfggg";
+	print_stuff(const_cast<char*>(szo));
+
+	//assert
+	Buffer basdf(10000000);
+	//printf("%s", basdf[9999999999]);
+	//ub
+	const int i = 10;
+	*(const_cast<int*>(&i)) = 120;  
+	std::cout << i;
 	return 0;
 }
