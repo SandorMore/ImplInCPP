@@ -237,6 +237,36 @@ inline namespace saso {
 		char* data;
 		unsigned int size;
 	};
+
+	template<typename T>
+	class CirularBuffer {
+	public:
+		CirularBuffer(int v) : capacity(v) {
+			buffer = new T[capacity];
+		}
+		~CirularBuffer() {
+			delete[] buffer;
+		}
+		void push(T item) {
+			buffer[tail] = item;
+			tail = (tail + 1) % capacity;
+			if (check_for_overflow()) {
+				head = (head + 1) % capacity;
+			}
+		}
+		T pop() {
+			T val = buffer[head];
+			head = (head + 1) % capacity;
+			return val;
+		}
+	private:
+		inline int check_for_overflow() const noexcept {
+			return (tail == head) ? 1 : 0;
+		}
+		int capacity;
+		T* buffer;
+		size_t head = 0, tail = 0;
+	};
 }
 
 void print_stuff(char* msg) {
@@ -269,3 +299,7 @@ int main(int argc, char** argv) {
 	std::cout << i;
 	return 0;
 }
+
+// 1 2 3 4 5
+//   t
+//	 h
