@@ -267,6 +267,48 @@ inline namespace saso {
 		T* buffer;
 		size_t head = 0, tail = 0;
 	};
+
+	template <typename T>	class LinkedList {
+	public:
+		struct Node {
+			T data;
+			Node* next = nullptr;
+			Node(T t) : data(t) {}
+		};
+
+		LinkedList() = default;
+
+		LinkedList(T t) {
+			head = new Node(t);
+		}
+
+		void add(T t) {
+			Node* newNode = new Node(t);
+
+			if (head == nullptr) {  
+				head = newNode;
+				return;
+			}
+
+			Node* curr = head;            
+			while (curr->next != nullptr)
+				curr = curr->next;
+
+			curr->next = newNode;       
+		}
+
+		~LinkedList() {                   
+			Node* curr = head;
+			while (curr != nullptr) {
+				Node* next = curr->next;
+				delete curr;
+				curr = next;
+			}
+		}
+
+	private:
+		Node* head = nullptr;
+	};
 }
 
 void print_stuff(char* msg) {
