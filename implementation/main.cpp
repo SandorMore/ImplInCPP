@@ -309,6 +309,19 @@ inline namespace saso {
 	private:
 		Node* head = nullptr;
 	};
+
+	
+	template <typename T>
+	class shared_pointer {
+	public:
+
+		~shared_pointer() {
+			--reCount;
+		}
+	private:
+		T* data;
+		static int refCount;
+	};
 }
 
 void print_stuff(char* msg) {
