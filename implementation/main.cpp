@@ -322,6 +322,30 @@ inline namespace saso {
 		T* data;
 		static int refCount;
 	};
+	class Logger 
+	{
+	public:
+		void Log(const std::string message) const;
+	private:
+		class Impl;
+
+		Logger();
+		~Logger();
+		
+		std::unique_ptr<Impl>impl;
+	};
+	class Logger::Impl {
+	public:
+		Impl() 
+		{
+
+		}
+
+	private:
+	};
+	Logger::Logger() :impl(std::make_unique<Impl>()) {
+
+	}
 }
 
 void print_stuff(char* msg) {
