@@ -316,7 +316,7 @@ inline namespace saso {
 	public:
 
 		~shared_pointer() {
-			--reCount;
+			--refCount;
 		}
 	private:
 		T* data;
@@ -346,6 +346,33 @@ inline namespace saso {
 	Logger::Logger() :impl(std::make_unique<Impl>()) {
 
 	}
+
+
+
+
+
+	class Base {
+	public:
+		Base() {
+			ptr = new int[10] {0};
+			std::cout << "Base Constructed\n";
+		}
+		~Base() {
+			delete[] ptr;
+			std::cout << "Base Destroyed\n";
+		}
+		//_Is_trivially_copy_assignable_returning_same_reference
+		int* ptr;
+	};
+	class Derived : public Base {
+	public:
+		Derived() {
+			std::cout << "Derived Constructed\n";
+		}
+		~Derived() {
+			std::cout << "Derived Destroyed\n";
+		}
+	};
 }
 
 void print_stuff(char* msg) {
@@ -376,6 +403,13 @@ int main(int argc, char** argv) {
 	const int i = 10;
 	*(const_cast<int*>(&i)) = 120;  
 	std::cout << i;
+
+	Base base {};
+	Derived derived {};
+
+
+
+
 	return 0;
 }
 
