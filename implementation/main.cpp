@@ -350,27 +350,23 @@ inline namespace saso {
 
 
 
-
+	//double delete
 	class Base {
 	public:
-		Base() {
-			ptr = new int[10] {0};
-			std::cout << "Base Constructed\n";
-		}
-		~Base() {
+		~Base()
+		{
 			delete[] ptr;
-			std::cout << "Base Destroyed\n";
 		}
-		//_Is_trivially_copy_assignable_returning_same_reference
+	protected:
 		int* ptr;
 	};
 	class Derived : public Base {
 	public:
 		Derived() {
-			std::cout << "Derived Constructed\n";
+			ptr = new int[10] {0};
 		}
 		~Derived() {
-			std::cout << "Derived Destroyed\n";
+			delete[] ptr;
 		}
 	};
 }
@@ -404,8 +400,8 @@ int main(int argc, char** argv) {
 	*(const_cast<int*>(&i)) = 120;  
 	std::cout << i;
 
-	Base base {};
-	Derived derived {};
+	//Base base {};
+	//Derived derived {};
 
 
 
