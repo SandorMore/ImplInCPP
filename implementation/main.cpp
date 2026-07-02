@@ -5,6 +5,8 @@
 #include <concepts>
 #include <memory>
 #include <cassert>
+#include <limits>
+
 inline namespace saso {
 	class String {
 	public:
@@ -398,13 +400,19 @@ int main(int argc, char** argv) {
 	//ub
 	const int i = 10;
 	*(const_cast<int*>(&i)) = 120;  
-	std::cout << i;
+	std::cout << i << std::endl;
 
 	//Base base {};
 	//Derived derived {};
 
 
+	std::cout << std::boolalpha << (std::numeric_limits<double>::max() == std::numeric_limits<double>::max()) << std::endl;
 
+	std::vector<int> szamok = { 1,2,3,4,5 };
+
+	for (size_t i{ szamok.size() }; i-- > 0; ) {
+		printf("Szam = %d", szamok[szamok.size() - i]);
+	}
 
 	return 0;
 }
