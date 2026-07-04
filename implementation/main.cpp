@@ -371,6 +371,42 @@ inline namespace saso {
 			delete[] ptr;
 		}
 	};
+
+	class OP {
+	public:
+		
+		explicit OP(std::initializer_list<int> _elems) : size{ _elems.size()}, elem{new int[size]}
+		{
+			std::copy(_elems.begin(), _elems.end(), elem);
+		}
+		
+		~OP() 
+		{
+			delete[] elem;
+		}
+
+		int& operator[](size_t idx) const
+		{
+			if (idx >= size) 
+			{
+				throw std::exception("Overindexed");
+			}
+			if (idx < 0) 
+			{
+				throw std::exception("Underindexed");
+			}
+
+			return elem[idx];
+		}
+
+		int& operator[](size_t idx) 
+		{
+			//return const_cast<int&>(static_cast<const OP&>((*this)[idx]));
+		}
+	private:
+		int* elem;
+		size_t size;
+	};
 }
 
 void print_stuff(char* msg) {
