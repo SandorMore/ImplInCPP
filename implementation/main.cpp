@@ -385,7 +385,7 @@ inline namespace saso {
 			delete[] elem;
 		}
 
-		int& operator[](size_t idx) const
+		const int& operator[](size_t idx) const
 		{
 			if (idx >= size) 
 			{
@@ -401,7 +401,7 @@ inline namespace saso {
 
 		int& operator[](size_t idx) 
 		{
-			//return const_cast<int&>(static_cast<const OP&>((*this)[idx]));
+			return const_cast<int&>(static_cast<const OP&>(*this)[idx]);
 		}
 	private:
 		int* elem;
