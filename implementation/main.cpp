@@ -8,6 +8,21 @@
 #include <limits>
 
 inline namespace saso {
+
+	class BigNum 
+	{
+	public:
+		BigNum()
+		{
+
+		}
+	private:
+		int ds[];
+
+	};
+
+
+
 	class String {
 	public:
 
